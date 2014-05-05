@@ -1,5 +1,7 @@
 #knockout-flatBindingProvider
 
+[demo](http://exe-dealer.github.io/knockout-flatBindingProvider/demo.html)
+
 ```html
 <label data-bind-css.checked="isChecked">
     <input data-bind-checked="isChecked"
