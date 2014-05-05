@@ -24,11 +24,11 @@ ko.flatBindingProvider.prototype._getNodeBindingsString = function (node) {
                 .replace(/_(.)/g, function (_, c) { return c.toUpperCase(); })
                 .split('.');
             var targetObj = bindingObj;
-            for (var j = 0; j < proppath.length - 1; j++) {
-                var propname = proppath[j];
+            while (proppath.length > 1) {
+                var propname = proppath.shift();
                 targetObj = propname in targetObj ? targetObj[propname] : (targetObj[propname] = {});
             }
-            targetObj[proppath[proppath.length - 1]] = attr.value;
+            targetObj[proppath.shift()] = attr.value;
         }
     }
 
