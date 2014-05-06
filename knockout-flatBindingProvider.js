@@ -17,7 +17,7 @@ ko.flatBindingProvider.prototype._getNodeBindingsString = function (node) {
     var bindingObj = {};
     for (var i = attrs.length - 1; i >= 0; i--) {
         var attr = attrs[i];
-        if (attr.name.startsWith('data-bind-')) {
+        if (attr.name.lastIndexOf('data-bind-', 0) === 0) {
             var proppath = attr.name
                 .slice(10) // substring after 'data-bind-'
                 // underscore_case to camelCase
@@ -67,7 +67,7 @@ ko.flatBindingProvider.prototype.nodeHasBindings = function (node) {
     if (node.nodeType === 1 /* element */) {
         var attrs = node.attributes;
         for (var i = attrs.length - 1; i >= 0; i--) {
-            if (attrs[i].name.startsWith('data-bind-')) {
+            if (attrs[i].name.lastIndexOf('data-bind-', 0) === 0) {
                 return true;
             }
         }
