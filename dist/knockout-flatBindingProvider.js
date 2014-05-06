@@ -1,16 +1,5 @@
-ko.flatBindingProvider = function () {
-    ko.flatBindingProvider._super.constructor.apply(this, arguments);
-}
-
-ko.flatBindingProvider._super = ko.bindingProvider.prototype;
-ko.flatBindingProvider.prototype = (function () {
-    var f = function () {};
-    f.prototype = ko.flatBindingProvider._super;
-    return new f();
-})();
-ko.flatBindingProvider.prototype.constructor = ko.flatBindingProvider;
-
-ko.flatBindingProvider.prototype._getNodeBindingsString = function (node) {
+(function () {
+function getFlatBindingsString(node) {
     if (node.nodeType !== 1 /* element */) return;
 
     var attrs = node.attributes;
@@ -32,36 +21,35 @@ ko.flatBindingProvider.prototype._getNodeBindingsString = function (node) {
         }
     }
 
-    var tokens = [];
-    var stack = [bindingObj];
-    while (stack.length) {
-        var obj = stack.pop();
-        if (typeof obj === 'string') {
-            tokens.push(obj);
-        } else {
-            stack.push('}');
-            var notFirst = false;
-            for (propname in obj) {
-                if (notFirst) stack.push(',');
-                stack.push(obj[propname], ':', '"', propname, '"');
-                notFirst = true;
-            }
-            stack.push('{');
+    return (function rec(obj) {
+        var result = '';
+        var notFirst = false;
+        for (propname in obj) {
+            if (notFirst) result += ',';
+            result += "'" + propname + "':";
+            var child = obj[propname];
+            result += (typeof child === 'string') ? child : '{' + rec(child) + '}';
+            notFirst = true;
         }
-    }
-
-    // trim root brackets
-    tokens.pop();
-    tokens.shift();
-
-    return tokens.join('');
+        return result;
+    })(bindingObj);
+}
+ko.flatBindingProvider = function () {
+    ko.flatBindingProvider._super.constructor.apply(this, arguments);
 }
 
+ko.flatBindingProvider._super = ko.bindingProvider.prototype;
+ko.flatBindingProvider.prototype = (function () {
+    var f = function () {};
+    f.prototype = ko.flatBindingProvider._super;
+    return new f();
+})();
+ko.flatBindingProvider.prototype.constructor = ko.flatBindingProvider;
+
 ko.flatBindingProvider.prototype.getBindingsString = function (node, bindingContext) {
-    return this._getNodeBindingsString(node) ||
+    return getFlatBindingsString(node) ||
         ko.flatBindingProvider._super.getBindingsString.apply(this, arguments);
 };
-
 
 ko.flatBindingProvider.prototype.nodeHasBindings = function (node) {
     if (node.nodeType === 1 /* element */) {
@@ -74,3 +62,4 @@ ko.flatBindingProvider.prototype.nodeHasBindings = function (node) {
     }
     return ko.flatBindingProvider._super.nodeHasBindings.apply(this, arguments);
 };
+})();
