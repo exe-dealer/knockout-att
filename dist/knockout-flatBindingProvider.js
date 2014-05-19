@@ -17,7 +17,7 @@ function getFlatBindingsString(node) {
                 var propname = proppath.shift();
                 targetObj = propname in targetObj ? targetObj[propname] : (targetObj[propname] = {});
             }
-            targetObj[proppath.shift()] = attr.value;
+            targetObj[proppath[0]] = attr.value;
         }
     }
 
