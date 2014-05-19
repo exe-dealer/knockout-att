@@ -11,7 +11,7 @@ knockout-flatBindingProvider allows to write following code
    data-bind-attr.title="headline"
    data-bind-css.highlighted="isHighlighted"
    data-bind-css.has-geometry="hasGeometry"
-   data-bind-event.mouseout="highlight"
+   data-bind-event.mouseover="highlight"
    data-bind-event.mouseout="unhighlight"
    class="geo-search-hit"></a>
 ```
@@ -26,7 +26,7 @@ instead of
                       title: headline },
               css: { 'highlighted': isHighlighted,
                      'has-geometry': hasGeometry },
-              event: { mouseout: highlight,
+              event: { mouseover: highlight,
                        mouseout: unhighlight }"></a>
 ```
 
