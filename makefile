@@ -1,20 +1,5 @@
 .PHONY: all
-all: dist/knockout-flatBindingProvider.js dist/knockout-flatBindings-compile.js
+all: knockout-att.min.js
 
-dist/knockout-flatBindingProvider.js: getFlatBindingsString.js flatBindingProvider.js makefile
-	{ \
-		echo '(function () {'; \
-		cat getFlatBindingsString.js; \
-		cat flatBindingProvider.js; \
-		echo '})();'; \
-	} > $@
-
-dist/knockout-flatBindings-compile.js: getFlatBindingsString.js compile.js makefile
-	{ \
-		cat getFlatBindingsString.js; \
-		cat compile.js; \
-	} > $@
-
-.PHONY: test
-test: getFlatBindingsString.js getFlatBindingsStringTest.js makefile
-	nodejs getFlatBindingsStringTest.js
+knockout-att.min.js: knockout-att.js makefile
+	closure-compiler --compilation_level SIMPLE_OPTIMIZATIONS  knockout-att.js > $@

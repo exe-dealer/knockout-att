@@ -3,11 +3,45 @@
 <head>
   <meta charset="utf-8" />
   <title>knockout-flatBindingProvider</title>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-debug.js"></script>
-  <script src="dist/knockout-flatBindingProvider.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-debug.js"></script>
+  <script src="knockout-att.min.js"></script>
   <script>ko.bindingProvider.instance = new ko.flatBindingProvider()</script>
 
+  <script id="tree-tmpl" type="text/html">
+    <ul class="tree" data-bind-foreach="children">
+      <li>
+
+        <button data-bind-click="toggle"
+                data-bind-visible="hasChildren"
+                data-bind-css.expanded="isExpanded"
+                data-bind-css.loading="isLoading"></button>
+
+        <header>
+          <a data-bind-attr.href="'#' + name"
+             data-bind-click="open"
+             data-bind-text="name"
+             data-bind-style.background-color="color"></a>
+        </header>
+
+        <!-- ko template: {
+          name : 'tree-tmpl',
+          if   : isExpanded
+        } --><!-- /ko -->
+
+      </li>
+    </ul>
+  </script>
+
   <style>
+
+    .camelCaseClass::before {
+      content: 'camelCaseClass works';
+    }
+
+    .underscore_class::before {
+      content: 'underscore_class works';
+    }
+
     body {
       font-family: 'DejaVu Sans', 'Verdana';
     }
@@ -94,9 +128,11 @@
       -webkit-transform-origin: center center;
          -moz-transform-origin: center center;
           -ms-transform-origin: center center;
+              transform-origin: center center;
       -webkit-animation: spin .5s infinite linear;
          -moz-animation: spin .5s infinite linear;
           -ms-animation: spin .5s infinite linear;
+              animation: spin .5s infinite linear;
     }
 
     @-webkit-keyframes spin {
@@ -124,29 +160,8 @@
 
   <main data-bind-template.name="'tree-tmpl'"></main>
 
-  <script id="tree-tmpl" type="text/html">
-    <ul class="tree" data-bind-foreach="children">
-      <li>
-
-        <button data-bind-click="toggle"
-                data-bind-visible="hasChildren"
-                data-bind-css.expanded="isExpanded"
-                data-bind-css.loading="isLoading"></button>
-
-        <header>
-          <a data-bind-attr.href="'#' + name"
-             data-bind-click="open"
-             data-bind-text="name"></a>
-        </header>
-
-        <!-- ko template: {
-          name : 'tree-tmpl',
-          if   : isExpanded
-        } --><!-- /ko -->
-
-      </li>
-    </ul>
-  </script>
+  <div data-bind-css.camel_case_class="true"></div>
+  <div data-bind-css.underscore__class="true"></div>
 
   <script>
     function TreeNode(name, level) {
@@ -156,34 +171,37 @@
       this.children = ko.observable();
       this._level = level || 0;
       this.hasChildren = this._level < 3;
+      this.color = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
     }
 
-    TreeNode.prototype.toggle = function () {
-      if (this.isExpanded()) {
-        this.isExpanded(false);
+    ko.utils.extend(TreeNode.prototype, {
+      toggle: function () {
+        if (this.isExpanded()) {
+          this.isExpanded(false);
+          this.isLoading(false);
+        } else {
+          this.isExpanded(true);
+          this.isLoading(true);
+          this.children(null);
+          setTimeout(this._onChildrenReady.bind(this), 1000);
+        }
+      },
+
+      addChildren: function () {
+        this.children(['one', 'two', 'three', 'four', 'five'].map(function (name) {
+          return new TreeNode(name, this._level + 1);
+        }, this));
+      },
+
+      _onChildrenReady: function () {
         this.isLoading(false);
-      } else {
-        this.isExpanded(true);
-        this.isLoading(true);
-        this.children(null);
-        setTimeout(this._onChildrenReady.bind(this), 1000);
+        this.addChildren();
+      },
+
+      open: function () {
+        alert(this.name + ' is opened.');
       }
-    };
-
-    TreeNode.prototype.addChildren = function () {
-      this.children(['one', 'two', 'three', 'four', 'five'].map(function (name) {
-        return new TreeNode(name, this._level + 1);
-      }, this));
-    };
-
-    TreeNode.prototype._onChildrenReady = function () {
-      this.isLoading(false);
-      this.addChildren();
-    };
-
-    TreeNode.prototype.open = function () {
-      alert(this.name + ' is opened.');
-    };
+    });
 
     var model = new TreeNode('root');
     model.isExpanded(true);

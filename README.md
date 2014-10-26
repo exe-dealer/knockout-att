@@ -1,8 +1,8 @@
 #knockout-flatBindingProvider
 
-[demo](http://exe-dealer.github.io/knockout-flatBindingProvider/demo.html)
+[demo](http://exe-dealer.github.io/knockout-att/demo.html)
 
-knockout-flatBindingProvider allows to write following code
+knockout-att allows to write following code
 
 ```html
 <a data-bind-click="showOnMap"
@@ -33,15 +33,14 @@ instead of
 ## Usage
 
 ```html
-<script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
-<script src="http://exe-dealer.github.io/knockout-flatBindingProvider/dist/knockout-flatBindingProvider.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+<script src="http://exe-dealer.github.io/knockout-att/knockout-att.min.js"></script>
 <script>ko.bindingProvider.instance = new ko.flatBindingProvider()</script>
 ```
 
 ## camelCase bindings
 
-Since HTML allows only lowercase names for attributes,
-upper chars must be escaped with underscore.
+Since HTML is case insensitive, upper chars must be escaped with underscore.
 
 ```html
 <input data-bind-checked_value="$data"
