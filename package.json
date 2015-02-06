@@ -1,0 +1,31 @@
+{
+  "name": "knockout-att-compiler",
+  "version": "1.1.0",
+  "description": "Unnested attribute-based syntax for Knockout",
+  "homepage": "https://github.com/exe-dealer/knockout-att",
+  "author": {
+    "name": "Nezhutin Vladislav",
+    "email": "exe-dealer@yandex.ru"
+  },
+  "bugs": {
+    "url": "https://github.com/exe-dealer/knockout-att/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/exe-dealer/knockout-att.git"
+  },
+  "bin": {
+    "koattc": "koattc"
+  },
+  "dependencies": {
+    "jsdom": "*",
+    "fs": "*"
+  },
+  "keywords": [
+    "knockout",
+    "knockoutjs",
+    "knockout pretty",
+    "knockout attribute syntax",
+    "knockout-att"
+  ]
+}
