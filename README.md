@@ -47,3 +47,9 @@ Since HTML is case insensitive, upper chars must be escaped with underscore.
        data-bind-checked="isChecked"
        type="checkbox" />
 ```
+
+## Compile to native binding syntax
+
+```bash
+$ cat source.html | nodejs knockout-att.js
+```

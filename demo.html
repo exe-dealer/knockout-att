@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>knockout-flatBindingProvider</title>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-debug.js"></script>
-  <script src="knockout-att.min.js"></script>
+  <script src="knockout-att.js"></script>
   <script>ko.bindingProvider.instance = new ko.flatBindingProvider()</script>
 
   <script id="tree-tmpl" type="text/html">
@@ -38,8 +38,8 @@
       content: 'camelCaseClass works';
     }
 
-    .underscore_class::before {
-      content: 'underscore_class works';
+    .snake_case_class::before {
+      content: 'snake_case_class works';
     }
 
     body {
@@ -161,7 +161,7 @@
   <main data-bind-template.name="'tree-tmpl'"></main>
 
   <div data-bind-css.camel_case_class="true"></div>
-  <div data-bind-css.underscore__class="true"></div>
+  <div data-bind-css.snake__case__class="true"></div>
 
   <script>
     function TreeNode(name, level) {
